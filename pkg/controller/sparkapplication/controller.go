@@ -609,6 +609,10 @@ func (c *Controller) syncSparkApplication(key string) error {
 				glog.Errorf("failed to clean up resources for SparkApplication %s/%s: %v", app.Namespace, app.Name, err)
 				return err
 			}
+			if err := c.deleteExternalAccessResources(appCopy); err != nil {
+				glog.Errorf("failed to clean up access resources for SparkApplication %s/%s: %v", app.Namespace, app.Name, err)
+				return err
+			}
 		}
 	}
 

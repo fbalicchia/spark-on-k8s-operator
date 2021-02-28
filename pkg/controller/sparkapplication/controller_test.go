@@ -916,6 +916,27 @@ func TestSyncSparkApplication_SubmissionSuccess(t *testing.T) {
 			},
 			expectedState: v1beta2.SubmittedState,
 		},
+		{
+			app: &v1beta2.SparkApplication{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "foo",
+					Namespace: "default",
+				},
+				Spec: v1beta2.SparkApplicationSpec{
+					RestartPolicy: restartPolicyNever,
+				},
+				Status: v1beta2.SparkApplicationStatus{
+					AppState: v1beta2.ApplicationState{
+						State: v1beta2.SucceedingState,
+					},
+					DriverInfo: v1beta2.DriverInfo{
+						WebUIServiceName: "blah-service",
+						WebUIIngressName: "blah-ingress",
+					},
+				},
+			},
+			expectedState: v1beta2.CompletedState,
+		},
 	}
 
 	for _, test := range testcases {
