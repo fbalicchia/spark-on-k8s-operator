@@ -817,7 +817,7 @@ func (c *Controller) getSparkApplication(namespace string, name string) (*v1beta
 	return app, nil
 }
 
-// Delete the driver pod and optional UI resources (Service/Ingress) created for the application.
+// Delete the driver pod
 func (c *Controller) deleteSparkResources(app *v1beta2.SparkApplication) error {
 	driverPodName := app.Status.DriverInfo.PodName
 	// Derive the driver pod name in case the driver pod name was not recorded in the status,
@@ -831,6 +831,12 @@ func (c *Controller) deleteSparkResources(app *v1beta2.SparkApplication) error {
 	if err != nil && !errors.IsNotFound(err) {
 		return err
 	}
+
+	return c.deleteExternalAccessResources(app)
+}
+
+//Delete UI resources (Service/Ingress) created for the application.
+func (c *Controller) deleteExternalAccessResources(app *v1beta2.SparkApplication) error {
 
 	sparkUIServiceName := app.Status.DriverInfo.WebUIServiceName
 	if sparkUIServiceName != "" {
@@ -849,7 +855,6 @@ func (c *Controller) deleteSparkResources(app *v1beta2.SparkApplication) error {
 			return err
 		}
 	}
-
 	return nil
 }
 
