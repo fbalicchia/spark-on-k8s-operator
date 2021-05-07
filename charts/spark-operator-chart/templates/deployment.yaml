@@ -74,6 +74,9 @@ spec:
         - -webhook-svc-name={{ include "spark-operator.fullname" . }}-webhook
         - -webhook-config-name={{ include "spark-operator.fullname" . }}-webhook-config
         - -webhook-namespace-selector={{ .Values.webhook.namespaceSelector }}
+        - -webhook-server-cert=/etc/webhook-certs/tls.crt
+        - -webhook-ca-cert=/etc/webhook-certs/ca.crt
+        - -webhook-server-cert-key=/etc/webhook-certs/tls.key
         {{- end }}
         - -enable-resource-quota-enforcement={{ .Values.resourceQuotaEnforcement.enable }}
         {{- if gt (int .Values.replicaCount) 1 }}
@@ -90,7 +93,7 @@ spec:
       volumes:
         - name: webhook-certs
           secret:
-            secretName: {{ include "spark-operator.fullname" . }}-webhook-certs
+            secretName: {{ include "spark-operator.fullname" . }}-cert
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

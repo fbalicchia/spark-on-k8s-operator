@@ -21,6 +21,9 @@ The previous `spark-operator` Helm chart hosted at [helm/charts](https://github.
 
 ## Installing the chart
 
+Before enable webjhooks is necessary to deploy certmanager installed on your cluster please reference to [certmamanger](https://cert-manager.io/docs/installation/kubernetes/#installing-with-regular-manifests)
+
+
 ```shell
 
 $ helm repo add spark-operator https://googlecloudplatform.github.io/spark-on-k8s-operator
